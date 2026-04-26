@@ -25,11 +25,10 @@ SERVERS_FILE = APP_DIR / "servers.json"
 
 # ─── Defaults ───────────────────────────────────────────────────────────────
 
-DEFAULT_MODEL = "gemma2:latest"
+DEFAULT_MODEL = "gemma4-e4b-32k"
 
 BUILTIN_SERVERS = [
     {"label": "Localhost",    "url": "http://localhost:11434"},
-    {"label": "LAN Server",  "url": "http://192.168.50.67:11434"},
 ]
 
 # ─── Server persistence ────────────────────────────────────────────────────
@@ -381,10 +380,7 @@ def build_app():
         initial_models[0] if initial_models else DEFAULT_MODEL
     )
 
-    with gr.Blocks(title="Ollama Chat Studio", css=CUSTOM_CSS, theme=gr.themes.Soft(
-        primary_hue="slate", secondary_hue="blue", neutral_hue="slate",
-        font=gr.themes.GoogleFont("IBM Plex Sans"),
-    )) as app:
+    with gr.Blocks(title="Ollama Chat Studio") as app:
 
         # ── Header ──────────────────────────────────────────────────
         with gr.Row(elem_id="header-bar"):
@@ -463,7 +459,6 @@ def build_app():
                     avatar_images=(None, "https://ollama.com/public/ollama.png"),
                     render_markdown=True,
                     layout="panel",
-                    type="messages",
                 )
                 msg_input = gr.Textbox(
                     placeholder="Type your message and press Enter…",
@@ -539,4 +534,16 @@ def build_app():
 if __name__ == "__main__":
     app = build_app()
     app.queue()
-    app.launch(server_name="0.0.0.0", server_port=7860, share=False, inbrowser=True)
+    app.launch(
+        server_name="0.0.0.0",
+        server_port=7860,
+        share=False,
+        inbrowser=True,
+        css=CUSTOM_CSS,
+        theme=gr.themes.Soft(
+            primary_hue="slate",
+            secondary_hue="blue",
+            neutral_hue="slate",
+            font=gr.themes.GoogleFont("IBM Plex Sans"),
+        ),
+    )
